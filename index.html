@@ -1,1 +1,23 @@
-p
+<input type="file" id="cover">
+<input type="file" id="secret">
+<button id="merge">Gabungkan</button>
+
+<script>
+document.getElementById("merge").onclick = async () => {
+  const [coverFile, secretFile] = [
+    document.getElementById("cover").files[0],
+    document.getElementById("secret").files[0]
+  ];
+
+  const [coverBuf, secretBuf] = await Promise.all([
+    coverFile.arrayBuffer(),
+    secretFile.arrayBuffer()
+  ]);
+
+  const merged = new Blob([coverBuf, secretBuf], { type: coverFile.type });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(merged);
+  link.download = "hidden.png";
+  link.click();
+};
+</script>
